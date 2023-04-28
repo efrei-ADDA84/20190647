@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 
 ENV API_KEY=""
 ENV LAT=""
-ENV LON=""
+ENV LONG=""
 
 WORKDIR /home
 
