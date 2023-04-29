@@ -22,7 +22,7 @@ jobs:
 
       - name: Build the Docker image
         run:
-          docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/20190647:devops_TP2
+          docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/20190647:devops_tp2
 
       - name: Docker Push
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/20190647:devops_TP2
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/20190647:devops_tp2
