@@ -25,4 +25,4 @@ jobs:
           docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/20190647:devops_TP2
 
       - name: Docker Push
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/20190647
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/20190647:devops_TP2
