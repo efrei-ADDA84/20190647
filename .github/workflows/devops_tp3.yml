@@ -43,3 +43,4 @@ jobs:
             name: 20190647
             location: 'france central'
             secure-environment-variables: API_KEY=${{ secrets.API_KEY }}
+            port: 8081
