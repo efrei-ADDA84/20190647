@@ -1,0 +1,44 @@
+name: Push Docker container to Azure
+
+on:
+  push:
+    branches: ['main']
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        defaults:
+          run:
+            working-directory: ./TP2
+        
+        steps:
+        # checkout the repo
+        - name: 'Checkout GitHub Action'
+          uses: actions/checkout@main
+          
+        - name: 'Login via Azure CLI'
+          uses: azure/login@v1
+          with:
+            creds: ${{ secrets.AZURE_CREDENTIALS }}
+        
+        - name: 'Build and push image'
+          uses: azure/docker-login@v1
+          with:
+            login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+            username: ${{ secrets.REGISTRY_USERNAME }}
+            password: ${{ secrets.REGISTRY_PASSWORD }}
+        - run: |
+            docker build . --file Dockerfile --tag ${{ secrets.REGISTRY_LOGIN_SERVER }}/20190647:devops_tp3
+            docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/20190647:devops_tp3
+
+        - name: 'Deploy to Azure Container Instances'
+          uses: 'azure/aci-deploy@v1'
+          with:
+            resource-group: ${{ secrets.RESOURCE_GROUP }}
+            dns-name-label: devops-20190647
+            image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/20190647:devops_tp3
+            registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+            registry-username: ${{ secrets.REGISTRY_USERNAME }}
+            registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+            name: 20190647
+            location: 'france central'
