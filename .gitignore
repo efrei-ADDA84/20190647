@@ -161,3 +161,10 @@ cython_debug/
 
 # NodeJS
 node_modules/
+
+# Terraform
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
