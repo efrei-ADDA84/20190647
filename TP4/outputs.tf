@@ -1,5 +1,5 @@
 output "public_ip_address" {
-  value = azurerm_linux_virtual_machine.tp4.public_ip_address
+  value = azurerm_public_ip.tp4.ip_address
 }
 
 output "tls_private_key" {

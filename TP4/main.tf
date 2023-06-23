@@ -4,30 +4,27 @@ provider "azurerm" {
 }
 
 resource "azurerm_public_ip" "tp4" {
-  name                = "public-ip"
+  name                = "public-ip-20190647"
   location            = "francecentral"
   resource_group_name = "ADDA84-CTP"
   allocation_method   = "Static"
 }
 
-resource "azurerm_virtual_network" "network-tp4" {
-}
-
-resource "azurerm_subnet" "tp4" {
+data "azurerm_subnet" "network-tp4" {
   name                 = "internal"
+  virtual_network_name = "network-tp4"
   resource_group_name  = "ADDA84-CTP"
-  virtual_network_name = azurerm_virtual_network.network-tp4.name
-  address_prefixes     = ["10.0.1.0/24"]
 }
 
 resource "azurerm_network_interface" "tp4" {
-  name                      = "nic"
+  name                      = "nic-20190647"
   location                  = "francecentral"
   resource_group_name       = "ADDA84-CTP"
   ip_configuration {
     name                          = "config"
-    subnet_id                     = azurerm_subnet.tp4.id
+    subnet_id                     = data.azurerm_subnet.network-tp4.id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id = azurerm_public_ip.tp4.id
   }
 }
 
@@ -52,7 +49,6 @@ resource "azurerm_linux_virtual_machine" "tp4" {
   }
 
   os_disk {
-    name              = "osdisk"
     caching           = "ReadWrite"
     storage_account_type = "Premium_LRS"
   }
